@@ -6,7 +6,7 @@ import "./styles.css";
 export default class NewBlogPost extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: "" };
+    this.state = { text: "", title: "", category: "" };
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -14,17 +14,57 @@ export default class NewBlogPost extends Component {
     this.setState({ text: value });
   }
 
+  createPost = async () => {
+    try {
+      let response = await fetch("http://localhost:3001/blogPosts",{
+        method: "POST",
+        body: JSON.stringify({
+          category: this.state.category,
+          title: this.state.title,
+          cover:
+            "https://coursereport-production.imgix.net/uploads/school/logo/1045/original/Strive_-_logosquareblack.png?w=200&h=200&dpr=1&q=75",
+          readTime: {
+            value: 5,
+            unit: "minute",
+          },
+          author: {
+            name: "Edward Tunkl",
+            avatar:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2UugtAXFro4g_Im5O2GibsjF2nzdx5O--qw&usqp=CAU",
+          },
+          content: this.state.text,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        console.log(response.json());
+      }
+    } catch(error){
+      console.log(error)
+    }
+  }
+  sendPost = (e) => {
+    e.preventDefault()
+    this.createPost()
+  }
+
   render() {
     return (
       <Container className="new-blog-container">
-        <Form className="mt-5">
+        <Form className="mt-5" onSubmit={this.sendPost}>
           <Form.Group controlId="blog-form" className="mt-3">
             <Form.Label>Title</Form.Label>
-            <Form.Control size="lg" placeholder="Title" />
+            <Form.Control size="lg" placeholder="Title" 
+            onChange={(e) => this.setState({title: e.target.value})}
+             />
           </Form.Group>
           <Form.Group controlId="blog-category" className="mt-3">
             <Form.Label>Category</Form.Label>
-            <Form.Control size="lg" as="select">
+            <Form.Control size="lg" as="select" 
+              onChange={(e) => this.setState({category: e.target.value})}
+            >
               <option>Category1</option>
               <option>Category2</option>
               <option>Category3</option>
