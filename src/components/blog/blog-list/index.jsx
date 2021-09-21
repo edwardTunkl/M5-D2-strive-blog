@@ -4,11 +4,15 @@ import BlogItem from "../blog-item";
 //import posts from "../../../data/posts.json";
 export default class BlogList extends Component {
   state = { posts: [] };
-
+  
+  componentDidMount(){
+    const apiURL = process.env.REACT_APP_BE_URL
+    this.fetchPosts()
+  }
   
   fetchPosts = async () => {
     try {
-      let response = await fetch("http://localhost:3001/blogPosts");
+      let response = await fetch(`${apiURL}/blogPosts`);
       let recievedPosts = await response.json();
       this.setState({ posts: recievedPosts });
       // console.log("THIS IS RECIEVEDPOST: ",recievedPosts)
@@ -18,10 +22,6 @@ export default class BlogList extends Component {
     }
   };
   
-  componentDidMount(){
-    this.fetchPosts()
-    
-  }
   
   render() {
     console.log("STATE",this.state.posts)

@@ -14,10 +14,11 @@ export default class NewBlogPost extends Component {
   handleChange(value) {
     this.setState({ text: value });
   }
+  apiUrl = process.env.REACT_APP_BE_URL
 
   createPost = async () => {
     try {
-      let response = await fetch("http://localhost:3001/blogPosts",{
+      let response = await fetch(`${this.apiUrl}/blogPosts`,{
         method: "POST",
         body: JSON.stringify({
           category: this.state.category,
@@ -46,7 +47,7 @@ export default class NewBlogPost extends Component {
         
       const formData = new FormData();
          formData.append("cover", this.state.file);
-          const resp = await fetch(`http://localhost:3001/blogPosts/${json.id}/cover`, {
+          const resp = await fetch(`${this.apiUrl}/blogPosts/${json.id}/cover`, {
             method: "PUT",
             body: formData,
           });
