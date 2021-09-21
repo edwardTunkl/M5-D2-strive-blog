@@ -11,13 +11,13 @@ class Blog extends Component {
   };
   
   componentDidMount() {
-  const apiUrl= process.env.REACT_APP_BE_URL     
+  // const apiUrl= process.env.REACT_APP_BE_URL     
     this.fetchPosts()
   }
 
   fetchPosts = async () => {
     try {
-      let response = await fetch(`${apiUrl}/blogPosts/`+ this.props.match.params.id);
+      let response = await fetch(`https://blogpost-express-app.herokuapp.com/blogPosts/`+ this.props.match.params.id);
       let data = await response.json();
       console.log("DATA: ",data)
       this.setState({ blog: data, 

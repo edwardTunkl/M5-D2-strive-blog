@@ -6,7 +6,7 @@ export default class BlogList extends Component {
   state = { posts: [] };
   
   componentDidMount(){
-    const apiURL = process.env.REACT_APP_BE_URL
+    // const apiURL = process.env.REACT_APP_BE_URL
     this.fetchPosts()
   }
   

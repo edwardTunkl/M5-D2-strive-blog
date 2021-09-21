@@ -14,11 +14,11 @@ export default class NewBlogPost extends Component {
   handleChange(value) {
     this.setState({ text: value });
   }
-  apiUrl = process.env.REACT_APP_BE_URL
+  // apiUrl = process.env.REACT_APP_BE_URL
 
   createPost = async () => {
     try {
-      let response = await fetch(`${this.apiUrl}/blogPosts`,{
+      let response = await fetch(`https://blogpost-express-app.herokuapp.com/blogPosts`,{
         method: "POST",
         body: JSON.stringify({
           category: this.state.category,
