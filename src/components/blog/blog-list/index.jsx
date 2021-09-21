@@ -10,9 +10,9 @@ export default class BlogList extends Component {
     try {
       let response = await fetch("http://localhost:3001/blogPosts");
       let recievedPosts = await response.json();
-      this.setState = ({ posts: recievedPosts });
-      console.log(recievedPosts)
-      return recievedPosts
+      this.setState({ posts: recievedPosts });
+      // console.log("THIS IS RECIEVEDPOST: ",recievedPosts)
+      
     } catch (error) {
       console.log(error);
     }
@@ -20,11 +20,11 @@ export default class BlogList extends Component {
   
   componentDidMount(){
     this.fetchPosts()
-    console.log("STATE",this.state.posts)
-   
+    
   }
-
+  
   render() {
+    console.log("STATE",this.state.posts)
     return (
       <Row>
         {this.state.posts.map((post) => (

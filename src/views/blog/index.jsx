@@ -9,30 +9,28 @@ class Blog extends Component {
     blog: {},
     loading: true,
   };
+  
+  componentDidMount() {
+   this.fetchPosts()
 
-  fetchPosts = async (id) => {
+  }
+
+  fetchPosts = async () => {
     try {
-      let response = await fetch(`http://localhost:3001/blogPosts/${id}`);
-      let blogItem = await response.json();
-      this.setState({ blog: blogItem, loading: false });
-      return blogItem;
+      let response = await fetch(`http://localhost:3001/blogPosts/`+ this.props.match.params.id);
+      let data = await response.json();
+      console.log("DATA: ",data)
+      this.setState({ blog: data, 
+                      loading: false });
+      // return data;
     } catch (error) {
       console.log(error);
     }
   };
-  componentDidMount() {
-    const { id } = this.props.match.params;
-    this.fetchPosts(id);
-    // console.log(posts);
-    // const blog = posts.find((post) => post._id.toString() === id);
-    // if (blog) {
-    //   this.setState({ blog, loading: false });
-    // } else {
-    //   this.props.history.push("/404");
-    // }
-  }
+
 
   render() {
+    // console.log("PROPS", this.props)
     const { loading, blog } = this.state;
     if (loading) {
       return <div>loading</div>;

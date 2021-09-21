@@ -6,8 +6,9 @@ import "./styles.css";
 export default class NewBlogPost extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: "", title: "", category: "" };
+    this.state = { text: "", title: "", category: "", file: null };
     this.handleChange = this.handleChange.bind(this);
+    
   }
 
   handleChange(value) {
@@ -21,10 +22,10 @@ export default class NewBlogPost extends Component {
         body: JSON.stringify({
           category: this.state.category,
           title: this.state.title,
-          cover:
-            "https://coursereport-production.imgix.net/uploads/school/logo/1045/original/Strive_-_logosquareblack.png?w=200&h=200&dpr=1&q=75",
+          // removed cover: ".....",
+          //   "https://coursereport-production.imgix.net/uploads/school/logo/1045/original/Strive_-_logosquareblack.png?w=200&h=200&dpr=1&q=75",
           readTime: {
-            value: 5,
+            value: 2,
             unit: "minute",
           },
           author: {
@@ -38,8 +39,22 @@ export default class NewBlogPost extends Component {
           "Content-Type": "application/json",
         },
       });
-      if (response.ok) {
-        console.log(response.json());
+      if (response.ok) {    
+      const json = await response.json()
+      console.log("New Response ID",json.id)
+
+        
+      const formData = new FormData();
+         formData.append("cover", this.state.file);
+          const resp = await fetch(`http://localhost:3001/blogPosts/${json.id}/cover`, {
+            method: "PUT",
+            body: formData,
+          });
+          if (resp.ok) {
+           console.log("cover was sent")
+          } else {
+            console.log("not sent")
+          } 
       }
     } catch(error){
       console.log(error)
@@ -48,6 +63,7 @@ export default class NewBlogPost extends Component {
   sendPost = (e) => {
     e.preventDefault()
     this.createPost()
+    console.log("STATE: ",this.state)
   }
 
   render() {
@@ -80,6 +96,16 @@ export default class NewBlogPost extends Component {
               className="new-blog-content"
             />
           </Form.Group>
+          <Form.Group controlId="blog-content">
+              <Form.Label>Blog Cover</Form.Label>
+              <Form.Control
+                onChange={(e) => { 
+                this.setState({file: e.target.files[0]})
+                }}
+                type="file"
+                placeholder="Cover"
+              />
+            </Form.Group>
           <Form.Group className="d-flex mt-3 justify-content-end">
             <Button type="reset" size="lg" variant="outline-dark">
               Reset
