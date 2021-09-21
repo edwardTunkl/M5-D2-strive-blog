@@ -5,8 +5,8 @@ import BlogItem from "../blog-item";
 export default class BlogList extends Component {
   state = { posts: [] };
   
-  apiURL = process.env.REACT_APP_BE_URL
   componentDidMount(){
+    const apiURL = process.env.REACT_APP_BE_URL
     this.fetchPosts()
   }
   
