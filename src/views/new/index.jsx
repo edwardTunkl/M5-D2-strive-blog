@@ -8,7 +8,7 @@ export default class NewBlogPost extends Component {
     super(props);
     this.state = { text: "", title: "", category: "", file: null };
     this.handleChange = this.handleChange.bind(this);
-    
+    const apiUrl = process.env.REACT_APP_BE_URL
   }
 
   handleChange(value) {
@@ -18,7 +18,7 @@ export default class NewBlogPost extends Component {
 
   createPost = async () => {
     try {
-      let response = await fetch(`https://blogpost-express-app.herokuapp.com/blogPosts`,{
+      let response = await fetch(`https://${apiUrl}/blogPosts`,{
         method: "POST",
         body: JSON.stringify({
           category: this.state.category,
@@ -47,7 +47,7 @@ export default class NewBlogPost extends Component {
         
       const formData = new FormData();
          formData.append("cover", this.state.file);
-          const resp = await fetch(`https://blogpost-express-app.herokuapp.com/blogPosts/${json.id}/cover`, {
+          const resp = await fetch(`${apiUrl}/blogPosts/${json.id}/cover`, {
             method: "PUT",
             body: formData,
           });
